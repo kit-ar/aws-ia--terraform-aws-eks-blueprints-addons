@@ -2293,14 +2293,14 @@ module "external_dns" {
   role_path                     = try(var.external_dns.role_path, "/")
   role_permissions_boundary_arn = lookup(var.external_dns, "role_permissions_boundary_arn", null)
   role_description              = try(var.external_dns.role_description, "IRSA for external-dns operator")
-  role_policies                 = lookup(var.external_dns, "role_policies", {})
+  role_policies                 = try(var.external_dns.role_policies, {}) # lookup(var.external_dns, "role_policies", {})
 
   source_policy_documents = compact(concat(
     data.aws_iam_policy_document.external_dns[*].json,
-    lookup(var.external_dns, "source_policy_documents", [])
+    try(var.external_dns.source_policy_documents, []) # lookup(var.external_dns, "source_policy_documents", [])
   ))
-  override_policy_documents = lookup(var.external_dns, "override_policy_documents", [])
-  policy_statements         = lookup(var.external_dns, "policy_statements", [])
+  override_policy_documents = try(var.external_dns.override_policy_documents, []) # lookup(var.external_dns, "override_policy_documents", [])
+  policy_statements         = try(var.external_dns.policy_statements, []) # lookup(var.external_dns, "policy_statements", [])
   policy_name               = try(var.external_dns.policy_name, null)
   policy_name_use_prefix    = try(var.external_dns.policy_name_use_prefix, true)
   policy_path               = try(var.external_dns.policy_path, null)
@@ -2446,14 +2446,14 @@ module "external_secrets" {
   role_path                     = try(var.external_secrets.role_path, "/")
   role_permissions_boundary_arn = lookup(var.external_secrets, "role_permissions_boundary_arn", null)
   role_description              = try(var.external_secrets.role_description, "IRSA for external-secrets operator")
-  role_policies                 = lookup(var.external_secrets, "role_policies", {})
+  role_policies                 = try(var.external_secrets.role_policies, {}) # lookup(var.external_secrets, "role_policies", {})
 
   source_policy_documents = compact(concat(
     data.aws_iam_policy_document.external_secrets[*].json,
-    lookup(var.external_secrets, "source_policy_documents", [])
+    try(var.external_secrets.source_policy_documents, []) # lookup(var.external_secrets, "source_policy_documents", [])
   ))
-  override_policy_documents = lookup(var.external_secrets, "override_policy_documents", [])
-  policy_statements         = lookup(var.external_secrets, "policy_statements", [])
+  override_policy_documents = try(var.external_secrets.override_policy_documents, []) # lookup(var.external_secrets, "override_policy_documents", [])
+  policy_statements         = try(var.external_secrets.policy_statements, []) # lookup(var.external_secrets, "policy_statements", [])
   policy_name               = try(var.external_secrets.policy_name, null)
   policy_name_use_prefix    = try(var.external_secrets.policy_name_use_prefix, true)
   policy_path               = try(var.external_secrets.policy_path, null)
@@ -3419,14 +3419,14 @@ module "velero" {
   role_path                     = try(var.velero.role_path, "/")
   role_permissions_boundary_arn = lookup(var.velero, "role_permissions_boundary_arn", null)
   role_description              = try(var.velero.role_description, "IRSA for Velero")
-  role_policies                 = lookup(var.velero, "role_policies", {})
+  role_policies                 = try(var.velero.role_policies, {}) # lookup(var.velero, "role_policies", {})
 
   source_policy_documents = compact(concat(
     data.aws_iam_policy_document.velero[*].json,
-    lookup(var.velero, "source_policy_documents", [])
-  ))
-  override_policy_documents = lookup(var.velero, "override_policy_documents", [])
-  policy_statements         = lookup(var.velero, "policy_statements", [])
+    try(var.velero.source_policy_documents, [])) # lookup(var.velero, "source_policy_documents", [])
+  )
+  override_policy_documents = try(var.velero.override_policy_documents, []) # lookup(var.velero, "override_policy_documents", [])
+  policy_statements         = try(var.velero.policy_statements, []) # lookup(var.velero, "policy_statements", [])
   policy_name               = try(var.velero.policy_name, "velero")
   policy_name_use_prefix    = try(var.velero.policy_name_use_prefix, true)
   policy_path               = try(var.velero.policy_path, null)
