@@ -1,6 +1,12 @@
 # Amazon EKS Blueprints Addons
 
 Terraform module to deploy Kubernetes addons on Amazon EKS clusters.
+*This fork supports hashicorp/aws ~>4.47*
+*use the following spec to include (non-standard to prevent confusion with future refreshes from upstream)*
+```hcl
+  source = "git::https://github.com/kit-ar/aws-ia--terraform-aws-eks-blueprints-addons?ref=kit-ar/aws-4.x/v1.8.1002"
+
+```
 
 ## Usage
 
