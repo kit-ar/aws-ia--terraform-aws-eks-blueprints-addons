@@ -2185,8 +2185,9 @@ resource "aws_eks_addon" "this" {
   addon_version               = try(each.value.addon_version, data.aws_eks_addon_version.this[each.key].version)
   configuration_values        = try(each.value.configuration_values, null)
   preserve                    = try(each.value.preserve, true)
-  resolve_conflicts_on_create = try(each.value.resolve_conflicts, "OVERWRITE")
-  resolve_conflicts_on_update = try(each.value.resolve_conflicts, "OVERWRITE")
+  # resolve_conflicts_on_create = try(each.value.resolve_conflicts, "OVERWRITE")
+  # resolve_conflicts_on_update = try(each.value.resolve_conflicts, "OVERWRITE")
+  resolve_conflicts           = try(each.value.resolve_conflicts, "OVERWRITE")  # 230915-JC: required for hashicorp/aws 4.x compat
   service_account_role_arn    = try(each.value.service_account_role_arn, null)
 
   timeouts {
