@@ -3377,13 +3377,13 @@ module "velero" {
       name  = "initContainers"
       value = <<-EOT
    - name: velero-plugin-for-aws
-     image: velero/velero-plugin-for-aws:v1.7.1
+     image: velero/velero-plugin-for-aws:v1.8.0
      imagePullPolicy: IfNotPresent
      volumeMounts:
        - mountPath: /target
          name: plugins
    - name: velero-plugin-for-microsoft-azure
-     image: velero/velero-plugin-for-microsoft-azure:v1.7.1
+     image: velero/velero-plugin-for-microsoft-azure:v1.8.0
      imagePullPolicy: IfNotPresent
      volumeMounts:
        - mountPath: /target
