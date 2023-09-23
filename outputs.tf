@@ -241,7 +241,7 @@ output "gitops_metadata" {
       iam_role_arn    = module.aws_node_termination_handler[0].iam_role_arn
       namespace       = local.aws_node_termination_handler_namespace
       service_account = local.aws_node_termination_handler_service_account
-      sqs_queue_url   = module.aws_node_termination_handler_sqs.queue_url
+      sqs_queue_url   = module.aws_node_termination_handler_sqs[0].queue_url
       } : "aws_node_termination_handler_${k}" => v if var.enable_aws_node_termination_handler
     },
     { for k, v in {
