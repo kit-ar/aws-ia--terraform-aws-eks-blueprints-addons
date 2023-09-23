@@ -69,6 +69,10 @@ locals {
 # Argo Rollouts
 ################################################################################
 
+moved {
+  from = module.argo_rollouts
+  to = module.argo_rollouts[0]
+}
 module "argo_rollouts" {
   source  = "aws-ia/eks-blueprints-addon/aws"
   version = "1.1.0"
@@ -126,6 +130,10 @@ module "argo_rollouts" {
 # Argo Workflows
 ################################################################################
 
+moved {
+  from = module.argo_workflows
+  to = module.argo_workflows[0]
+}
 module "argo_workflows" {
   source  = "aws-ia/eks-blueprints-addon/aws"
   version = "1.1.0"
@@ -183,6 +191,10 @@ module "argo_workflows" {
 # ArgoCD
 ################################################################################
 
+moved {
+  from = module.argocd
+  to = module.argocd[0]
+}
 module "argocd" {
   source  = "aws-ia/eks-blueprints-addon/aws"
   version = "1.1.0"
@@ -241,6 +253,10 @@ module "argocd" {
 # Argo Events
 ################################################################################
 
+moved {
+  from = module.argo_events
+  to = module.argo_events[0]
+}
 module "argo_events" {
   source  = "aws-ia/eks-blueprints-addon/aws"
   version = "1.1.0"
@@ -301,6 +317,10 @@ locals {
   aws_cloudwatch_metrics_namespace       = try(var.aws_cloudwatch_metrics.namespace, "amazon-cloudwatch")
 }
 
+moved {
+  from = module.aws_cloudwatch_metrics
+  to = module.aws_cloudwatch_metrics[0]
+}
 module "aws_cloudwatch_metrics" {
   source  = "aws-ia/eks-blueprints-addon/aws"
   version = "1.1.0"
@@ -468,6 +488,10 @@ data "aws_iam_policy_document" "aws_efs_csi_driver" {
   }
 }
 
+moved {
+  from = module.aws_efs_csi_driver
+  to = module.aws_efs_csi_driver[0]
+}
 module "aws_efs_csi_driver" {
   source  = "aws-ia/eks-blueprints-addon/aws"
   version = "1.1.0"
@@ -647,6 +671,10 @@ data "aws_iam_policy_document" "aws_for_fluentbit" {
   }
 }
 
+moved {
+  from = module.aws_for_fluentbit
+  to = module.aws_for_fluentbit[0]
+}
 module "aws_for_fluentbit" {
   source  = "aws-ia/eks-blueprints-addon/aws"
   version = "1.1.0"
@@ -1045,6 +1073,10 @@ data "aws_iam_policy_document" "aws_fsx_csi_driver" {
   }
 }
 
+moved {
+  from = module.aws_fsx_csi_driver
+  to = module.aws_fsx_csi_driver[0]
+}
 module "aws_fsx_csi_driver" {
   source  = "aws-ia/eks-blueprints-addon/aws"
   version = "1.1.0"
@@ -1409,6 +1441,10 @@ data "aws_iam_policy_document" "aws_load_balancer_controller" {
   }
 }
 
+moved {
+  from = module.aws_load_balancer_controller
+  to = module.aws_load_balancer_controller[0]
+}
 module "aws_load_balancer_controller" {
   source  = "aws-ia/eks-blueprints-addon/aws"
   version = "1.1.0"
@@ -1523,6 +1559,10 @@ locals {
   )
 }
 
+moved {
+  from = module.aws_node_termination_handler_sqs
+  to = module.aws_node_termination_handler_sqs[0]
+}
 module "aws_node_termination_handler_sqs" {
   source  = "terraform-aws-modules/sqs/aws"
   version = "4.0.1"
@@ -1626,6 +1666,10 @@ data "aws_iam_policy_document" "aws_node_termination_handler" {
   }
 }
 
+moved {
+  from = module.aws_node_termination_handler
+  to = module.aws_node_termination_handler[0]
+}
 module "aws_node_termination_handler" {
   source  = "aws-ia/eks-blueprints-addon/aws"
   version = "1.1.0"
@@ -1752,6 +1796,10 @@ data "aws_iam_policy_document" "aws_privateca_issuer" {
   }
 }
 
+moved {
+  from = module.aws_privateca_issuer
+  to = module.aws_privateca_issuer[0]
+}
 module "aws_privateca_issuer" {
   source  = "aws-ia/eks-blueprints-addon/aws"
   version = "1.1.0"
@@ -1872,6 +1920,10 @@ data "aws_iam_policy_document" "cert_manager" {
   }
 }
 
+moved {
+  from = module.cert_manager
+  to = module.cert_manager[0]
+}
 module "cert_manager" {
   source  = "aws-ia/eks-blueprints-addon/aws"
   version = "1.1.0"
@@ -2020,6 +2072,10 @@ data "aws_iam_policy_document" "cluster_autoscaler" {
   }
 }
 
+moved {
+  from = module.cluster_autoscaler
+  to = module.cluster_autoscaler[0]
+}
 module "cluster_autoscaler" {
   source  = "aws-ia/eks-blueprints-addon/aws"
   version = "1.1.0"
@@ -2126,6 +2182,10 @@ module "cluster_autoscaler" {
 # Cluster Proportional Autoscaler
 ################################################################################
 
+moved {
+  from = module.cluster_proportional_autoscaler
+  to = module.cluster_proportional_autoscaler[0]
+}
 module "cluster_proportional_autoscaler" {
   source  = "aws-ia/eks-blueprints-addon/aws"
   version = "1.1.0"
@@ -2250,6 +2310,10 @@ data "aws_iam_policy_document" "external_dns" {
   }
 }
 
+moved {
+  from = module.external_dns
+  to = module.external_dns[0]
+}
 module "external_dns" {
   source  = "aws-ia/eks-blueprints-addon/aws"
   version = "1.1.0"
@@ -2404,6 +2468,10 @@ data "aws_iam_policy_document" "external_secrets" {
   }
 }
 
+moved {
+  from = module.external_secrets
+  to = module.external_secrets[0]
+}
 module "external_secrets" {
   source  = "aws-ia/eks-blueprints-addon/aws"
   version = "1.1.0"
@@ -2631,6 +2699,10 @@ resource "kubernetes_config_map_v1" "aws_logging" {
 # Gatekeeper
 ################################################################################
 
+moved {
+  from = module.gatekeeper
+  to = module.gatekeeper[0]
+}
 module "gatekeeper" {
   source  = "aws-ia/eks-blueprints-addon/aws"
   version = "1.1.0"
@@ -2688,6 +2760,10 @@ module "gatekeeper" {
 # Ingress Nginx
 ################################################################################
 
+moved {
+  from = module.ingress_nginx
+  to = module.ingress_nginx[0]
+}
 module "ingress_nginx" {
   source  = "aws-ia/eks-blueprints-addon/aws"
   version = "1.1.0"
@@ -2834,6 +2910,10 @@ data "aws_iam_policy_document" "karpenter" {
   }
 }
 
+moved {
+  from = module.karpenter_sqs
+  to = module.karpenter_sqs[0]
+}
 module "karpenter_sqs" {
   source  = "terraform-aws-modules/sqs/aws"
   version = "4.0.1"
@@ -2947,6 +3027,10 @@ resource "aws_iam_instance_profile" "karpenter" {
   tags = merge(var.tags, try(var.karpenter_node.instance_profile_tags, {}))
 }
 
+moved {
+  from = module.karpenter
+  to = module.karpenter[0]
+}
 module "karpenter" {
   source  = "aws-ia/eks-blueprints-addon/aws"
   version = "1.1.0"
@@ -3068,6 +3152,10 @@ module "karpenter" {
 # kubectl delete crd servicemonitors.monitoring.coreos.com
 # kubectl delete crd thanosrulers.monitoring.coreos.com
 
+moved {
+  from = module.kube_prometheus_stack
+  to = module.kube_prometheus_stack[0]
+}
 module "kube_prometheus_stack" {
   source  = "aws-ia/eks-blueprints-addon/aws"
   version = "1.1.0"
@@ -3125,6 +3213,10 @@ module "kube_prometheus_stack" {
 # Metrics Server
 ################################################################################
 
+moved {
+  from = module.metrics_server
+  to = module.metrics_server[0]
+}
 module "metrics_server" {
   source  = "aws-ia/eks-blueprints-addon/aws"
   version = "1.1.0"
@@ -3182,6 +3274,10 @@ module "metrics_server" {
 # Secrets Store CSI Driver
 ################################################################################
 
+moved {
+  from = module.secrets_store_csi_driver
+  to = module.secrets_store_csi_driver[0]
+}
 module "secrets_store_csi_driver" {
   source  = "aws-ia/eks-blueprints-addon/aws"
   version = "1.1.0"
@@ -3239,6 +3335,10 @@ module "secrets_store_csi_driver" {
 # Secrets Store CSI Driver Provider AWS
 ################################################################################
 
+moved {
+  from = module.secrets_store_csi_driver_provider_aws
+  to = module.secrets_store_csi_driver_provider_aws[0]
+}
 module "secrets_store_csi_driver_provider_aws" {
   source  = "aws-ia/eks-blueprints-addon/aws"
   version = "1.1.0"
@@ -3350,6 +3450,10 @@ data "aws_iam_policy_document" "velero" {
   }
 }
 
+moved {
+  from = module.velero
+  to = module.velero[0]
+}
 module "velero" {
   source  = "aws-ia/eks-blueprints-addon/aws"
   version = "1.1.0"
@@ -3483,6 +3587,10 @@ module "velero" {
 # Vertical Pod Autoscaler
 ################################################################################
 
+moved {
+  from = module.vpa
+  to = module.vpa[0]
+}
 module "vpa" {
   source  = "aws-ia/eks-blueprints-addon/aws"
   version = "1.1.0"
@@ -3567,6 +3675,10 @@ data "aws_iam_policy_document" "aws_gateway_api_controller" {
   }
 }
 
+moved {
+  from = module.aws_gateway_api_controller
+  to = module.aws_gateway_api_controller[0]
+}
 module "aws_gateway_api_controller" {
   source  = "aws-ia/eks-blueprints-addon/aws"
   version = "1.1.0"
