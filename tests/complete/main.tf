@@ -145,7 +145,7 @@ module "eks_blueprints_addons" {
   enable_external_dns                          = true
   enable_external_secrets                      = true
   enable_gatekeeper                            = true
-  # enable_ingress_nginx                         = true
+  enable_ingress_nginx                         = true
 
   # Turn off mutation webhook for services to avoid ordering issue
   enable_aws_load_balancer_controller = true
@@ -168,11 +168,21 @@ module "eks_blueprints_addons" {
   }
   aws_for_fluentbit = {
     enable_containerinsights = true
+    kubelet_monitoring       = true
     chart_version            = "0.1.28"
     set = [{
       name  = "cloudWatchLogs.autoCreateGroup"
       value = true
-    }]
+      },
+      {
+        name  = "hostNetwork"
+        value = true
+      },
+      {
+        name  = "dnsPolicy"
+        value = "ClusterFirstWithHostNet"
+      }
+    ]
     s3_bucket_arns = [
       module.velero_backup_s3_bucket.s3_bucket_arn,
       "${module.velero_backup_s3_bucket.s3_bucket_arn}/logs/*"

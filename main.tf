@@ -833,8 +833,8 @@ resource "kubernetes_config_map_v1_data" "aws_for_fluentbit_containerinsights" {
             K8S-Logging.Exclude Off
             Labels Off
             Annotations Off
-            Use_Kubelet On
-            Kubelet_Port 10250
+            ${try(var.aws_for_fluentbit.kubelet_monitoring, false) ? "Use_Kubelet On" : ""}
+            ${try(var.aws_for_fluentbit.kubelet_monitoring, false) ? "Kubelet_Port 10250" : ""}
             Buffer_Size 0
 
         [OUTPUT]
@@ -2222,6 +2222,11 @@ data "aws_iam_policy_document" "external_dns" {
   }
 
   statement {
+    actions   = ["route53:ListTagsForResource"]
+    resources = var.external_dns_route53_zone_arns
+  }
+
+  statement {
     actions = [
       "route53:ListHostedZones",
       "route53:ListResourceRecordSets",
@@ -3523,7 +3528,8 @@ data "aws_iam_policy_document" "aws_gateway_api_controller" {
       "vpc-lattice:*",
       "iam:CreateServiceLinkedRole",
       "ec2:DescribeVpcs",
-      "ec2:DescribeSubnets"
+      "ec2:DescribeSubnets",
+      "ec2:DescribeTags"
     ]
     resources = ["*"]
   }
