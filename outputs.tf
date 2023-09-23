@@ -108,14 +108,14 @@ output "ingress_nginx" {
 
 output "karpenter" {
   description = "Map of attributes of the Helm release and IRSA created"
-  value = merge(
+  value = try(merge(
     module.karpenter,
     {
       node_instance_profile_name = try(aws_iam_instance_profile.karpenter[0].name, "")
       node_iam_role_arn          = try(aws_iam_role.karpenter[0].arn, "")
       sqs                        = module.karpenter_sqs
     }
-  )
+  ), null)
 }
 
 output "kube_prometheus_stack" {
