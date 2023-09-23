@@ -2918,6 +2918,7 @@ module "karpenter_sqs" {
   source  = "terraform-aws-modules/sqs/aws"
   version = "4.0.1"
 
+  count = var.enable_karpenter ? 1 : 0
   create = local.karpenter_enable_spot_termination
 
   name = try(var.karpenter_sqs.queue_name, "karpenter-${var.cluster_name}")
