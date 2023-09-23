@@ -1875,7 +1875,7 @@ module "cert_manager" {
   namespace        = local.cert_manager_namespace
   create_namespace = try(var.cert_manager.create_namespace, true)
   chart            = try(var.cert_manager.chart, "cert-manager")
-  chart_version    = try(var.cert_manager.chart_version, "v1.12.3")
+  chart_version    = try(var.cert_manager.chart_version, "v1.13.0")
   repository       = try(var.cert_manager.repository, "https://charts.jetstack.io")
   values           = try(var.cert_manager.values, [])
 
@@ -2250,7 +2250,7 @@ module "external_dns" {
   namespace        = local.external_dns_namespace
   create_namespace = try(var.external_dns.create_namespace, true)
   chart            = try(var.external_dns.chart, "external-dns")
-  chart_version    = try(var.external_dns.chart_version, "1.13.0")
+  chart_version    = try(var.external_dns.chart_version, "1.13.1")
   repository       = try(var.external_dns.repository, "https://kubernetes-sigs.github.io/external-dns/")
   values           = try(var.external_dns.values, ["provider: aws"])
 
@@ -2403,7 +2403,7 @@ module "external_secrets" {
   namespace        = local.external_secrets_namespace
   create_namespace = try(var.external_secrets.create_namespace, true)
   chart            = try(var.external_secrets.chart, "external-secrets")
-  chart_version    = try(var.external_secrets.chart_version, "0.9.1")
+  chart_version    = try(var.external_secrets.chart_version, "0.9.5")
   repository       = try(var.external_secrets.repository, "https://charts.external-secrets.io")
   values           = try(var.external_secrets.values, [])
 
