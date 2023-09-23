@@ -3395,23 +3395,27 @@ module "velero" {
       value = local.velero_service_account
     },
     {
-      name  = "configuration.provider"
+      name  = "configuration.backupStorageLocation[0].provider"
       value = "aws"
     },
     {
-      name  = "configuration.backupStorageLocation.prefix"
+      name  = "configuration.backupStorageLocation[0].prefix"
       value = local.velero_backup_s3_bucket_prefix
     },
     {
-      name  = "configuration.backupStorageLocation.bucket"
+      name  = "configuration.backupStorageLocation[0].bucket"
       value = local.velero_backup_s3_bucket_name
     },
     {
-      name  = "configuration.backupStorageLocation.config.region"
+      name  = "configuration.backupStorageLocation[0].config.region"
       value = local.region
     },
     {
-      name  = "configuration.volumeSnapshotLocation.config.region"
+      name  = "configuration.volumeSnapshotLocation[0].provider"
+      value = "aws"
+    },
+    {
+      name  = "configuration.volumeSnapshotLocation[0].config.region"
       value = local.region
     },
     {
