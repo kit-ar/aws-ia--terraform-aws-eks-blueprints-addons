@@ -3382,6 +3382,12 @@ module "velero" {
      volumeMounts:
        - mountPath: /target
          name: plugins
+   - name: velero-plugin-for-microsoft-azure
+     image: velero/velero-plugin-for-microsoft-azure:v1.7.1
+     imagePullPolicy: IfNotPresent
+     volumeMounts:
+       - mountPath: /target
+         name: plugins
             EOT
     },
     {
