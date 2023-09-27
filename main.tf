@@ -3371,7 +3371,7 @@ module "velero" {
       # 230927-JC: moved to json encode as attempt to troubleshoot obscure (but ended up becoming nicer to manage)
       #           Error: YAML parse error on velero/templates/deployment.yaml: error converting YAML to JSON:
       #           yaml: line 100: found a tab character that violates indentation
-      value = jsonencode([
+      value = yamlencode([
         {
           name = "velero-plugin-for-aws"
           image = "velero/velero-plugin-for-aws:v1.8.0"
