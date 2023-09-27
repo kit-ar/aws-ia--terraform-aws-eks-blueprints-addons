@@ -4,7 +4,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = ">= 4.47"
+      version = ">= 4.47" # 230927-JC: DO NOT MOVE TO v5 as this is the whole point of this fork (sort of)
     }
     helm = {
       source  = "hashicorp/helm"
