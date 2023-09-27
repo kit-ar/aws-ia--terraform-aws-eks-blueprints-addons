@@ -1872,7 +1872,7 @@ module "cert_manager" {
   namespace        = local.cert_manager_namespace
   create_namespace = try(var.cert_manager.create_namespace, true)
   chart            = try(var.cert_manager.chart, "cert-manager")
-  chart_version    = try(var.cert_manager.chart_version, "v1.13.0")
+  chart_version    = try(var.cert_manager.chart_version, "v1.12.3")
   repository       = try(var.cert_manager.repository, "https://charts.jetstack.io")
   values           = try(var.cert_manager.values, [])
 
@@ -2397,7 +2397,7 @@ module "external_secrets" {
   namespace        = local.external_secrets_namespace
   create_namespace = try(var.external_secrets.create_namespace, true)
   chart            = try(var.external_secrets.chart, "external-secrets")
-  chart_version    = try(var.external_secrets.chart_version, "0.9.5")
+  chart_version    = try(var.external_secrets.chart_version, "0.9.5")    # 230927-JC: default version bump
   repository       = try(var.external_secrets.repository, "https://charts.external-secrets.io")
   values           = try(var.external_secrets.values, [])
 
@@ -3333,7 +3333,7 @@ module "velero" {
   namespace        = local.velero_namespace
   create_namespace = try(var.velero.create_namespace, true)
   chart            = try(var.velero.chart, "velero")
-  chart_version    = try(var.velero.chart_version, "~5.0.2")
+  chart_version    = try(var.velero.chart_version, "5.0.2")    # 230927-JC: update default chart version
   repository       = try(var.velero.repository, "https://vmware-tanzu.github.io/helm-charts/")
   values           = try(var.velero.values, [])
 
@@ -3369,12 +3369,14 @@ module "velero" {
       name  = "initContainers"
       value = <<-EOT
    - name: velero-plugin-for-aws
-     image: velero/velero-plugin-for-aws:v1.8.0
+     image: velero/velero-plugin-for-aws:v1.8.0    # 230927-JC: version bump for plugin in line with chart version
      imagePullPolicy: IfNotPresent
      volumeMounts:
        - mountPath: /target
          name: plugins
-   - name: velero-plugin-for-microsoft-azure
+	 
+   # 230927-JC: adding azure plugin to be able to address more complex scenarios
+   - name: velero-plugin-for-microsoft-azure 
      image: velero/velero-plugin-for-microsoft-azure:v1.8.0
      imagePullPolicy: IfNotPresent
      volumeMounts:
