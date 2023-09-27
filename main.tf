@@ -3367,43 +3367,57 @@ module "velero" {
   set = concat([
     {
       name  = "initContainers"
-      value = <<-EOT
-   - name: velero-plugin-for-aws
-     image: velero/velero-plugin-for-aws:v1.8.0    # 230927-JC: version bump for plugin in line with chart version
-     imagePullPolicy: IfNotPresent
-     volumeMounts:
-       - mountPath: /target
-         name: plugins
-	 
-   # 230927-JC: adding azure plugin to be able to address more complex scenarios
-   - name: velero-plugin-for-microsoft-azure 
-     image: velero/velero-plugin-for-microsoft-azure:v1.8.0
-     imagePullPolicy: IfNotPresent
-     volumeMounts:
-       - mountPath: /target
-         name: plugins
-            EOT
+      # 230927-JC: plugins in v1.8 to bettter match chart version"
+      # 230927-JC: moved to json encode as attempt to troubleshoot obscure (but ended up becoming nicer to manage)
+      #           Error: YAML parse error on velero/templates/deployment.yaml: error converting YAML to JSON:
+      #           yaml: line 100: found a tab character that violates indentation
+      value = jsonencode([
+        {
+          name = "velero-plugin-for-aws"
+          image = "velero/velero-plugin-for-aws:v1.8.0"
+          imagePullPolicy = "IfNotPresent"
+          volumeMounts = [
+            {
+              mountPath = "/target"
+              name = "plugins"
+            }
+          ]
+        }, {
+          # 230927-JC: adding azure plugin to be able to address more complex scenarios
+          name = "velero-plugin-for-microsoft-azure"
+          image = "velero/velero-plugin-for-microsoft-azure:v1.8.0"
+          imagePullPolicy = "IfNotPresent"
+          volumeMounts = [
+            {
+              mountPath = "/target"
+              name = "plugins"
+            }
+          ]
+        }
+      ])
     },
     {
       name  = "serviceAccount.server.name"
       value = local.velero_service_account
     },
+    # https://velero.io/docs/v1.6/api-types/backupstoragelocation/
     {
       name  = "configuration.backupStorageLocation[0].provider"
       value = "aws"
-    },
-    {
-      name  = "configuration.backupStorageLocation[0].prefix"
-      value = local.velero_backup_s3_bucket_prefix
     },
     {
       name  = "configuration.backupStorageLocation[0].bucket"
       value = local.velero_backup_s3_bucket_name
     },
     {
+      name  = "configuration.backupStorageLocation[0].prefix"
+      value = local.velero_backup_s3_bucket_prefix
+    },
+    {
       name  = "configuration.backupStorageLocation[0].config.region"
       value = local.region
     },
+    # https://velero.io/docs/v1.6/api-types/volumesnapshotlocation/
     {
       name  = "configuration.volumeSnapshotLocation[0].provider"
       value = "aws"
