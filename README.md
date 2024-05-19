@@ -14,15 +14,6 @@ or
 ## Usage
 
 ```hcl
-module "eks" {
-  source = "terraform-aws-modules/eks/aws"
-
-  cluster_name    = "my-cluster"
-  cluster_version = "1.27"
-
-  ... truncated for brevity
-}
-
 module "eks_blueprints_addons" {
   source = "aws-ia/eks-blueprints-addons/aws"
   version = "~> 1.0" #ensure to update this to the latest/desired version
@@ -59,6 +50,15 @@ module "eks_blueprints_addons" {
   tags = {
     Environment = "dev"
   }
+}
+
+module "eks" {
+  source = "terraform-aws-modules/eks/aws"
+
+  cluster_name    = "my-cluster"
+  cluster_version = "1.29"
+
+  ... truncated for brevity
 }
 ```
 
@@ -209,6 +209,7 @@ module "eks_blueprints_addons" {
 | <a name="input_enable_cert_manager"></a> [enable\_cert\_manager](#input\_enable\_cert\_manager) | Enable cert-manager add-on | `bool` | `false` | no |
 | <a name="input_enable_cluster_autoscaler"></a> [enable\_cluster\_autoscaler](#input\_enable\_cluster\_autoscaler) | Enable Cluster autoscaler add-on | `bool` | `false` | no |
 | <a name="input_enable_cluster_proportional_autoscaler"></a> [enable\_cluster\_proportional\_autoscaler](#input\_enable\_cluster\_proportional\_autoscaler) | Enable Cluster Proportional Autoscaler | `bool` | `false` | no |
+| <a name="input_enable_eks_fargate"></a> [enable\_eks\_fargate](#input\_enable\_eks\_fargate) | Identifies whether or not respective addons should be modified to support deployment on EKS Fargate | `bool` | `false` | no |
 | <a name="input_enable_external_dns"></a> [enable\_external\_dns](#input\_enable\_external\_dns) | Enable external-dns operator add-on | `bool` | `false` | no |
 | <a name="input_enable_external_secrets"></a> [enable\_external\_secrets](#input\_enable\_external\_secrets) | Enable External Secrets operator add-on | `bool` | `false` | no |
 | <a name="input_enable_fargate_fluentbit"></a> [enable\_fargate\_fluentbit](#input\_enable\_fargate\_fluentbit) | Enable Fargate FluentBit add-on | `bool` | `false` | no |
