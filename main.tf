@@ -2538,8 +2538,19 @@ data "aws_iam_policy_document" "fargate_fluentbit" {
       resources = var.fargate_fluentbit.s3_bucket_arns
     }
   }
-}
 
+  dynamic "statement" {
+    for_each = try(var.fargate_fluentbit.send_to_firehose, false) ? [1] : []
+
+    content {
+      sid = "FirehoseEvent"
+      actions = [
+        "firehose:PutRecordBatch"
+      ]
+      resources = lookup(var.fargate_fluentbit, "firehose_arns", ["*"])
+    }
+  }
+}
 # Help on Fargate Logging with Fluentbit and CloudWatch
 # https://docs.aws.amazon.com/eks/latest/userguide/fargate-logging.html
 resource "kubernetes_namespace_v1" "aws_observability" {
@@ -2725,11 +2736,14 @@ locals {
   karpenter_service_account_name    = try(var.karpenter.service_account_name, "karpenter")
   karpenter_enable_spot_termination = var.enable_karpenter && var.karpenter_enable_spot_termination
 
-  create_karpenter_node_iam_role       = var.enable_karpenter && try(var.karpenter_node.create_iam_role, true)
-  karpenter_node_iam_role_arn          = try(aws_iam_role.karpenter[0].arn, var.karpenter_node.iam_role_arn, "")
-  karpenter_node_iam_role_name         = try(var.karpenter_node.iam_role_name, "karpenter-${var.cluster_name}")
-  karpenter_node_instance_profile_name = try(aws_iam_instance_profile.karpenter[0].name, var.karpenter_node.instance_profile_name, "")
-  karpenter_namespace                  = try(var.karpenter.namespace, "karpenter")
+  create_karpenter_node_iam_role = var.enable_karpenter && try(var.karpenter_node.create_iam_role, true)
+  karpenter_node_iam_role_arn    = try(aws_iam_role.karpenter[0].arn, var.karpenter_node.iam_role_arn, "")
+  karpenter_node_iam_role_name   = try(var.karpenter_node.iam_role_name, "karpenter-${var.cluster_name}")
+  # This is the name used when the instance profile is created by the module
+  input_karpenter_node_instance_profile_name = try(var.karpenter_node.instance_profile_name, local.karpenter_node_iam_role_name)
+  # This is the name passed to the Karpenter Helm chart - either the profile the module creates, or one provided by the user
+  output_karpenter_node_instance_profile_name = try(aws_iam_instance_profile.karpenter[0].name, var.karpenter_node.instance_profile_name, "")
+  karpenter_namespace                         = try(var.karpenter.namespace, "karpenter")
 
   karpenter_set = [
     # TODO - remove at next breaking change
@@ -2748,7 +2762,7 @@ locals {
     },
     {
       name  = "settings.aws.defaultInstanceProfile"
-      value = var.karpenter_enable_instance_profile_creation ? null : local.karpenter_node_instance_profile_name
+      value = var.karpenter_enable_instance_profile_creation ? null : local.output_karpenter_node_instance_profile_name
     },
     # Post 0.32.x
     {
@@ -2766,7 +2780,7 @@ locals {
     # TODO - this is not valid but being discussed as a re-addition. TBD on what the schema will be though
     # {
     #   name  = "settings.defaultInstanceProfile"
-    #   value = var.karpenter_enable_instance_profile_creation ? null : local.karpenter_node_instance_profile_name
+    #   value = var.karpenter_enable_instance_profile_creation ? null : local.output_karpenter_node_instance_profile_name
     # },
     # Agnostic of version difference
     {
@@ -2823,7 +2837,7 @@ data "aws_iam_policy_document" "karpenter" {
 
   statement {
     actions   = ["ssm:GetParameter"]
-    resources = ["arn:${local.partition}:ssm:${local.region}::parameter/*"]
+    resources = ["arn:${local.partition}:ssm:${local.region}::parameter/aws/service/*"]
   }
 
   statement {
@@ -2837,8 +2851,8 @@ data "aws_iam_policy_document" "karpenter" {
 
     condition {
       test     = "StringLike"
-      variable = "ec2:ResourceTag/${try(var.karpenter.irsa_tag_key, "Name")}"
-      values   = try(var.karpenter.irsa_tag_values, ["*karpenter*", "*compute.internal", "*ec2.internal"])
+      variable = "ec2:ResourceTag/kubernetes.io/cluster/${var.cluster_name}"
+      values   = ["*"]
     }
   }
 
@@ -2978,8 +2992,8 @@ resource "aws_iam_role_policy_attachment" "additional" {
 resource "aws_iam_instance_profile" "karpenter" {
   count = var.enable_karpenter && try(var.karpenter_node.create_instance_profile, true) ? 1 : 0
 
-  name        = try(var.karpenter_node.iam_role_use_name_prefix, true) ? null : local.karpenter_node_iam_role_name
-  name_prefix = try(var.karpenter_node.iam_role_use_name_prefix, true) ? "${local.karpenter_node_iam_role_name}-" : null
+  name        = try(var.karpenter_node.iam_role_use_name_prefix, true) ? null : local.input_karpenter_node_instance_profile_name
+  name_prefix = try(var.karpenter_node.iam_role_use_name_prefix, true) ? "${local.input_karpenter_node_instance_profile_name}-" : null
   path        = try(var.karpenter_node.iam_role_path, null)
   role        = try(aws_iam_role.karpenter[0].name, var.karpenter_node.iam_role_name, "")
 
@@ -3590,7 +3604,14 @@ data "aws_iam_policy_document" "aws_gateway_api_controller" {
       "iam:CreateServiceLinkedRole",
       "ec2:DescribeVpcs",
       "ec2:DescribeSubnets",
-      "ec2:DescribeTags"
+      "ec2:DescribeTags",
+      "ec2:DescribeSecurityGroups",
+      "logs:CreateLogDelivery",
+      "logs:GetLogDelivery",
+      "logs:UpdateLogDelivery",
+      "logs:DeleteLogDelivery",
+      "logs:ListLogDeliveries",
+      "tag:GetResources"
     ]
     resources = ["*"]
   }
