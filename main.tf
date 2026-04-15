@@ -3339,7 +3339,7 @@ module "velero" {
   namespace        = local.velero_namespace
   create_namespace = try(var.velero.create_namespace, true)
   chart            = try(var.velero.chart, "velero")
-  chart_version    = try(var.velero.chart_version, "6.4.0")  # Don't forget to update plugin versions below
+  chart_version    = try(var.velero.chart_version, "12.0.0")  # Don't forget to update plugin versions below
   repository       = try(var.velero.repository, "https://vmware-tanzu.github.io/helm-charts/")
   values           = try(var.velero.values, [])
 
@@ -3380,7 +3380,7 @@ module "velero" {
       value = yamlencode([
         {
           name = "velero-plugin-for-aws"
-          image = "velero/velero-plugin-for-aws:v1.9.2" # https://github.com/vmware-tanzu/velero-plugin-for-aws?tab=readme-ov-file#compatibility
+          image = "velero/velero-plugin-for-aws:v1.14.0" # https://github.com/vmware-tanzu/velero-plugin-for-aws?tab=readme-ov-file#compatibility
           imagePullPolicy = "IfNotPresent"
           volumeMounts = [
             {
@@ -3391,7 +3391,7 @@ module "velero" {
         }, {
           # 230927-JC: adding azure plugin to be able to address more complex scenarios
           name = "velero-plugin-for-microsoft-azure"
-          image = "velero/velero-plugin-for-microsoft-azure:v1.9.2" # https://github.com/vmware-tanzu/velero-plugin-for-microsoft-azure?tab=readme-ov-file#compatibility
+          image = "velero/velero-plugin-for-microsoft-azure:v1.14.0" # https://github.com/vmware-tanzu/velero-plugin-for-microsoft-azure?tab=readme-ov-file#compatibility
           imagePullPolicy = "IfNotPresent"
           volumeMounts = [
             {
